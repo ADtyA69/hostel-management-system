@@ -1,6 +1,7 @@
 package com.springboot.HostelManagmentSystem.Controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springboot.HostelManagmentSystem.Dao.Roomdao;
 import com.springboot.HostelManagmentSystem.Dao.Studentdao;
 import com.springboot.HostelManagmentSystem.Entity.Room;
 import com.springboot.HostelManagmentSystem.Entity.Student;
+
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -46,7 +50,7 @@ public class StudentController {
 
 	    // Save student
 	    @PostMapping("/students/save")
-	    public String saveStudent(@ModelAttribute Student student,@RequestParam int roomId, Model model) {
+	    public String saveStudent(@ModelAttribute Student student,@RequestParam UUID roomId, Model model) {
 	    	 
 	    	try {
 	            studentdao.assignStudentToRoom(student, roomId);
@@ -61,16 +65,23 @@ public class StudentController {
 
 	    // Edit student
 	    @GetMapping("/students/edit/{id}")
-	    public String editStudent(@PathVariable int id, Model model) {
-	    	Student student = studentdao.getStudentById(id);
+	    public String editStudent(@PathVariable UUID id, HttpSession session, Model model) {
+//	      
+
+	        Student student = studentdao.getStudentById(id);
+	        if (student == null) {
+	            return "error/404"; // Optional: Handle invalid ID
+	        }
+
 	        model.addAttribute("student", student);
 	        model.addAttribute("rooms", roomdao.getAllRooms());
-	        return "add_students";  // reuse form
+	        return "add_students";  // Reuse form
 	    }
 
 	    // Delete student
+	    
 	    @GetMapping("/students/delete/{id}")
-	    public String deleteStudent(@PathVariable int id) {
+	    public String deleteStudent(@PathVariable UUID id) {
 	        studentdao.deleteStudent(id);
 	        return "redirect:/students";
 	    }

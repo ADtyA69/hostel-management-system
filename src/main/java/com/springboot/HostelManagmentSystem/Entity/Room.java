@@ -1,7 +1,11 @@
 package com.springboot.HostelManagmentSystem.Entity;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,9 +18,11 @@ import jakarta.persistence.Table;
 public class Room {
 	
 	
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+	    private UUID id;
 
 	    private String roomNumber;
 	    private String type; // Single / Double
@@ -35,10 +41,10 @@ public class Room {
 		public void setStudents(List<Student> students) {
 			this.students = students;
 		}
-		public int getId() {
+		public UUID getId() {
 			return id;
 		}
-		public void setId(int id) {
+		public void setId(UUID id) {
 			this.id = id;
 		}
 		public String getRoomNumber() {
@@ -76,7 +82,7 @@ public class Room {
 			return "Room [id=" + id + ", roomNumber=" + roomNumber + ", type=" + type + ", capacity=" + capacity
 					+ ", occupied=" + occupied + ", status=" + status + "]";
 		}
-		public Room(int id, String roomNumber, String type, int capacity, int occupied, String status) {
+		public Room(UUID id, String roomNumber, String type, int capacity, int occupied, String status) {
 			super();
 			this.id = id;
 			this.roomNumber = roomNumber;

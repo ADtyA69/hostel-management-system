@@ -1,5 +1,7 @@
 package com.springboot.HostelManagmentSystem.Controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,14 +36,16 @@ public class AdminController {
 	
 	   @GetMapping("/logout")
 	   public String logout(HttpSession session) {
-	       session.invalidate();  // invalidate the session
-	       return "redirect:/login";  // redirect to login page after logout
+	       session.invalidate();  
+	       return "redirect:/login";  
 	   }
 	   
 	   @PostMapping("/login")
-	    public String doLogin(@RequestParam String email, @RequestParam String password, Model model) {
-	        // Hardcoded admin credentials
+	    public String doLogin(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
+	     
 	        if (email.equals("admin@gmail.com") && password.equals("admin123")) {
+	        	session.setAttribute("role", "admin");
+	            session.setAttribute("userId", 0); 
 	            return "redirect:/admin/dashboard";
 	        } else {
 	            model.addAttribute("errorMessage", "Invalid email or password");
@@ -59,7 +63,7 @@ public class AdminController {
 	    	    
 	    	    int availableRooms = roomdao.getAvailableRooms(); // Optional, if implemented
 	    	    model.addAttribute("availableRooms", availableRooms);
-	        return "AdminDashboard"; // create this jsp next
+	        return "AdminDashboard"; 
 	    }
 	    
 	    
@@ -69,7 +73,7 @@ public class AdminController {
 	        return "rooms";  // rooms.jsp
 	    }
 
-	    // Show Add Room Form
+	 
 	    @GetMapping("/admin/rooms/add")
 	    public String showAddRoomForm(Model model) {
 	        model.addAttribute("room", new Room());
@@ -82,15 +86,15 @@ public class AdminController {
 	        return "redirect:/admin/rooms";
 	    }
 
-	    @GetMapping("/admin/rooms/edit/{id}")
-	    public String editRoom(@PathVariable int id, Model model) {
+	    @PostMapping("/admin/rooms/edit")
+	    public String editRoom(@RequestParam("id") UUID id, Model model) {
 	        Room room = roomdao.getRoomById(id);
 	        model.addAttribute("room", room);
-	        return "add_room";
+	        return "add_room";  // returns to edit form with data filled
 	    }
 
-	    @GetMapping("/admin/rooms/delete/{id}")
-	    public String deleteRoom(@PathVariable int id) {
+	    @PostMapping("/admin/rooms/delete")
+	    public String deleteRoom(@RequestParam("id") UUID id) {
 	        roomdao.deleteRoom(id);
 	        return "redirect:/admin/rooms";
 	    }

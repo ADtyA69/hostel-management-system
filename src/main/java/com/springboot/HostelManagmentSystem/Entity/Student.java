@@ -1,5 +1,10 @@
 package com.springboot.HostelManagmentSystem.Entity;
 
+import java.util.UUID;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,9 +18,14 @@ import jakarta.persistence.Table;
 @Table(name = "students")
 public class Student {
 	
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+	    name = "UUID",
+	    strategy = "org.hibernate.id.UUIDGenerator"
+	)
+	@Column(name = "id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+	    private UUID id;
 
 	    private String name;
 	    private String email;
@@ -23,8 +33,8 @@ public class Student {
 	    private String address;
 	 // FK to Room
 	    
-	    @ManyToOne(fetch = FetchType.LAZY)
-	    @JoinColumn(name = "room_id")  // foreign key column in student table
+	    @ManyToOne
+	    @JoinColumn(name = "room_id", columnDefinition = "BINARY(16)")  // foreign key column in student table
 	    private Room room;
 	    
 	    
@@ -34,10 +44,10 @@ public class Student {
 		public void setRoom(Room room) {
 			this.room = room;
 		}
-		public int getId() {
+		public UUID getId() {
 			return id;
 		}
-		public void setId(int id) {
+		public void setId(UUID id) {
 			this.id = id;
 		}
 		public String getName() {

@@ -18,7 +18,8 @@
     <div class="container mt-5">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white">
-            <h3 class="text-center">${room.id == 0 ? 'Add Room' : 'Edit Room'}</h3>
+<h3 class="text-center">${room.id == null ? 'Add Room' : 'Edit Room'}</h3>
+<input type="hidden" name="id" value="${room.id != null ? room.id : ''}"/>
         </div>
         <div class="card-body">
             <form action="/admin/rooms/save" method="post">

@@ -39,8 +39,15 @@
                 <td>${room.occupied}</td>
                 <td>${room.status}</td>
                     <td>
-                        <a href="/admin/rooms/edit/${room.id}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="/admin/rooms/delete/${room.id}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this room?');">Delete</a>
+<form action="/admin/rooms/edit" method="post" style="display:inline;">
+    <input type="hidden" name="id" value="${room.id}" />
+    <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+</form>
+
+<form action="/admin/rooms/delete" method="post" style="display:inline;" onsubmit="return confirm('Are you sure to delete this room?');">
+    <input type="hidden" name="id" value="${room.id}" />
+    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+</form>
                     </td>
                 </tr>
             </c:forEach>

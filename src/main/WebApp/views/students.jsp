@@ -35,8 +35,9 @@
                     <td>${student.email}</td>
                     <td>${student.room.roomNumber}</td>
                     <td>
-                        <a href="/students/edit/${student.id}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="/students/delete/${student.id}" class="btn btn-sm btn-danger">Delete</a>
+                       <a href="/students/edit/${student.id}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="/students/delete/${student.id}" class="btn btn-sm btn-danger"
+   onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
                 </tr>
             </c:forEach>

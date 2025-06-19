@@ -14,7 +14,7 @@
 <body>
 
 <div class="container mt-5">
-    <h2 class="mb-4">${student.id == 0 ? 'Add Student' : 'Edit Student'}</h2>
+${student.room != null && student.room.id == room.id ? 'selected' : ''}
 
     <form action="/students/save" method="post">
         <input type="hidden" name="id" value="${student.id}"/>
@@ -31,13 +31,14 @@
 
        <div class="mb-3">
     <label class="form-label">Room</label>
-   <select name="roomId">
-        <c:forEach var="room" items="${rooms}">
-            <option value="${room.id}" ${student.room != null && student.room.id == room.id ? 'selected' : ''}>
-    Room ${room.roomNumber} - ${room.status} (${room.occupied}/${room.capacity})
-</option>
-        </c:forEach>
-    </select><br/>
+  <select name="roomId">
+    <c:forEach var="room" items="${rooms}">
+        <option value="${room.id}" 
+            <c:if test="${not empty student.room and student.room.id eq room.id}">selected</c:if>>
+            Room ${room.roomNumber} - ${room.status} (${room.occupied}/${room.capacity})
+        </option>
+    </c:forEach>
+</select><br/>
 
 </div>
 

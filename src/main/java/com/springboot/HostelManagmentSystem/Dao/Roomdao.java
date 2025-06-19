@@ -1,6 +1,7 @@
 package com.springboot.HostelManagmentSystem.Dao;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,11 @@ public class Roomdao {
 	        roomrepo.save(room);
 	    }
 
-	    public Room getRoomById(int id) {
-	        return roomrepo.findById(id).orElse(null);
+	    public Room getRoomById(UUID newRoomId){
+	        return roomrepo.findById(newRoomId).orElse(null);
 	    }
 
-	    public void deleteRoom(int roomId) {
+	    public void deleteRoom(UUID roomId) {
 	    	  Room room = getRoomById(roomId);
 	    	    if (room != null && room.getStudents() != null && !room.getStudents().isEmpty()) {
 	    	        throw new RuntimeException("Cannot delete room. Students are assigned to this room.");
@@ -57,4 +58,6 @@ public class Roomdao {
 			// TODO Auto-generated method stub
 			 return roomrepo.countAvailableRooms();
 		}
+
+		
 }
